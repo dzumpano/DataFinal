@@ -5,12 +5,15 @@ import matplotlib.pyplot as plt
 d = pd.read_csv("TWTR.csv")
 
 # TODO Part 2: dim reduction, clustering, classification
-plt.plot(d["Date"], d["High"], d["Low"])
-plt.show()
+print(d.head)
+
+# plt.plot(d["Date"], d["High"], d["Low"])
+# plt.show()
+# Elon musk bought twitter 4.25
 
 # Part 3:
 print(d.info())
-print("No pre-processing techniques were used")
+print("We removed earlier data that was non-essential")
 # TODO data mining techiques
 # TODO Visualization
 # TODO learned
