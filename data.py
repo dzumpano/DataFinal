@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt, dates as mdates
-import datetime as dt
+from datetime import datetime as dt
 from sklearn.cluster import DBSCAN
 from pandas.tseries.holiday import USFederalHolidayCalendar
 from pandas.tseries.offsets import CustomBusinessDay
@@ -9,19 +9,10 @@ from pandas.tseries.offsets import CustomBusinessDay
 d = pd.read_csv("TWTR.csv", delimiter=',')
 d_main = d[::-1]  # invert data frame
 
-
-
-
 # TODO Part 2: dim reduction, clustering, classification
 
 
 # Elon Musk bought twitter 4/25
-
-import matplotlib.pyplot as plt
-import datetime as dt
-import matplotlib.dates as mdates
-from pandas.tseries.holiday import USFederalHolidayCalendar
-from pandas.tseries.offsets import CustomBusinessDay
 
 d = pd.read_csv("TWTR.csv")
 d_in = d[::-1] # invert data frame
@@ -41,7 +32,7 @@ top_plt = plt.subplot2grid((5,4), (0, 0), rowspan=3, colspan=4)
 top_plt.plot(stock_data.index, stock_data["Close/Last"])
 
 plt.title('Stock prices of Twitter [5-10-2021 to 5-92022]')
-plt.axvline(dt.datetime(2022, 4, 25), color="Orange", linewidth = 2.0)
+plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 2.0)
 
 bottom_plt = plt.subplot2grid((5,4), (3,0), rowspan=1, colspan=4)
 bottom_plt.bar(stock_data.index, stock_data['Volume'])
@@ -60,15 +51,16 @@ plt.title("Date vs High and Low Price")
 plt.xlabel("Date")
 plt.ylabel("Stock Price in USD")
 
-formatter = mdates.DateFormatter("%Y-%m-%d")
+formatter = mdates.DateFormatter("%m-%d-%Y")
 ax.xaxis.set_major_formatter(formatter)
-locator = mdates.WeekdayLocator()
+locator = mdates.MonthLocator()
 ax.xaxis.set_major_locator(locator)
 plt.gcf().autofmt_xdate()
 datemin = dt(2021, 5, 9)
 datemax = dt(2022, 5, 6)
 plt.legend()
 ax.set_xlim(datemin, datemax)
+plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 1.0)
 plt.show()
 
 # Part 3:
