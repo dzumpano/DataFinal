@@ -36,7 +36,7 @@ plt.show()
 
 # Part 3:
 print(d.info())
-print("We removed earlier data that was non-essential")
+print("We removed earlier data that was non-essential and reduced the dimensionality usually to 2")
 # TODO data mining techiques
 # TODO Visualization
 # TODO learned
