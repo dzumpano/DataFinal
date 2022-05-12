@@ -38,7 +38,7 @@ bottom_plt = plt.subplot2grid((5,4), (3,0), rowspan=1, colspan=4)
 bottom_plt.bar(stock_data.index, stock_data['Volume'])
 plt.title('\nTwitter Trading Volume', y=-0.60)
 plt.gcf().set_size_inches(12,8)
-plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 2.0)
+plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 1.5)
 plt.show()
 
 dates = d_main["Date"]
