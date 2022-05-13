@@ -2,9 +2,11 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt, dates as mdates
 from datetime import datetime as dt
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN, KMeans
 from pandas.tseries.holiday import USFederalHolidayCalendar
 from pandas.tseries.offsets import CustomBusinessDay
+from sklearn.decomposition import PCA
+import numpy.linalg as LA
 
 d = pd.read_csv("TWTR.csv", delimiter=',')
 d_main = d[::-1]  # invert data frame
@@ -24,6 +26,52 @@ new_df = (d_in['Date']>= start_date) & (d_in['Date']<= end_date)
 df1 = d_in.loc[new_df]
 stock_data = df1.set_index('Date')
 
+#r vs f(r)
+array = []
+for i in range(2, 6):
+    pca = PCA(n_components=i)
+    D_PCA = pca.fit_transform(stock_data)
+    if np.any(D_PCA):
+        Sigma = np.cov(D_PCA.T, ddof=1)
+        print(Sigma)
+        evalues, evectors = LA.eig(Sigma)
+        total_var = sum(np.diag(Sigma))
+        frac = evalues[0] / total_var
+        components = np.array([i, frac])
+        array.append(components)
+array = np.array(array)
+plt.scatter(array[:, 0], array[:, 1])
+plt.title("r vs f(r)")
+plt.xlabel("r")
+plt.ylabel("f(r)")
+plt.xticks(np.arange(2,6,1))
+
+plt.show()
+
+# DIM REDUCTION AND KMEANS
+pca = PCA(n_components=2)
+dimred = pca.fit_transform(stock_data)
+kmeans = KMeans(n_clusters=3, init='k-means++', max_iter=300, random_state=0)
+pred_labels = kmeans.fit_predict(dimred)
+centers = kmeans.cluster_centers_
+plt.scatter(dimred[:, 0], dimred[:, 1], c=pred_labels)
+plt.scatter(centers[:, 0], centers[:, 1], s=50, c='red')
+plt.show()
+
+#k means inertia
+max_clusters = 50
+inertias = np.zeros(50)
+cluster_range = range(1, max_clusters)
+for i in cluster_range:
+    kmeans = KMeans(n_clusters=i, init='k-means++', max_iter=300, random_state=0)
+    kmeans.fit_predict(stock_data)
+    inertias[i] = kmeans.inertia_
+plt.plot(cluster_range, inertias[cluster_range], c='b', marker='.')
+plt.xticks(np.arange(1,51,1))
+plt.title("Objective Function of Various k values")
+plt.xlabel("k")
+plt.ylabel("Objective function")
+plt.show()
 # Elon Musk bought twitter 4/25
 
 # TODO Part 2: dim reduction, clustering, classification
@@ -31,7 +79,7 @@ plt.figure(1)
 top_plt = plt.subplot2grid((5,4), (0, 0), rowspan=3, colspan=4)
 top_plt.plot(stock_data.index, stock_data["Close/Last"])
 
-plt.title('Stock prices of Twitter [5-10-2021 to 5-92022]')
+plt.title('Stock prices of Twitter [5-10-2021 to 5-9-2022]')
 plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 2.0)
 
 bottom_plt = plt.subplot2grid((5,4), (3,0), rowspan=1, colspan=4)
