@@ -42,21 +42,23 @@ plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 1.5)
 plt.show()
 
 Diff = []
-for i in range(len(d_in)):
+for i in range(127, len(d_in)):
     Diff.append(d_in["High"][i] - d_in["Low"][i])
+half_stock_data = stock_data.tail(126)
 plt.figure(3)
 ax = plt.gca()
-plt.plot(stock_data.index, Diff)
+plt.plot(half_stock_data.index, Diff)
 plt.title("Difference in High and Low Price Each Day")
 plt.xlabel("Date")
 plt.ylabel("High Stock Price - Low Stock Price(USD)")
 ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
 ax.xaxis.set_major_locator(mdates.WeekdayLocator(interval=6))
 plt.gcf().autofmt_xdate()
-datemin = dt(2021, 5, 9)
+datemin = dt(2022, 1, 1)
 datemax = dt(2022, 5, 6)
 plt.legend()
 ax.set_xlim(datemin, datemax)
+plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 1.5)
 plt.show()
 
 # Part 3:
