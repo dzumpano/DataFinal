@@ -41,27 +41,22 @@ plt.gcf().set_size_inches(12,8)
 plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 1.5)
 plt.show()
 
-dates = d_main["Date"]
-x_values = [dt.strptime(d, "%m/%d/%Y").date() for d in dates]
-
+Diff = []
+for i in range(len(d_in)):
+    Diff.append(d_in["High"][i] - d_in["Low"][i])
+plt.figure(3)
 ax = plt.gca()
-plt.plot(x_values, d_main["High"], label="High")
-plt.plot(x_values, d_main["Low"], label="Low")
-
-plt.title("Date vs High and Low Price")
+plt.plot(stock_data.index, Diff)
+plt.title("Difference in High and Low Price Each Day")
 plt.xlabel("Date")
-plt.ylabel("Stock Price in USD")
-
-formatter = mdates.DateFormatter("%m-%d-%Y")
-ax.xaxis.set_major_formatter(formatter)
-locator = mdates.MonthLocator()
-ax.xaxis.set_major_locator(locator)
+plt.ylabel("High Stock Price - Low Stock Price(USD)")
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(interval=6))
 plt.gcf().autofmt_xdate()
 datemin = dt(2021, 5, 9)
 datemax = dt(2022, 5, 6)
 plt.legend()
 ax.set_xlim(datemin, datemax)
-plt.axvline(dt(2022, 4, 25), color="Orange", linewidth = 1.0)
 plt.show()
 
 # Part 3:
