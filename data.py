@@ -51,7 +51,7 @@ plt.show()
 # DIM REDUCTION AND KMEANS
 pca = PCA(n_components=2)
 dimred = pca.fit_transform(stock_data)
-kmeans = KMeans(n_clusters=3, init='k-means++', max_iter=300, random_state=0)
+kmeans = KMeans(n_clusters=2, init='k-means++', max_iter=300, random_state=0)
 pred_labels = kmeans.fit_predict(dimred)
 centers = kmeans.cluster_centers_
 plt.scatter(dimred[:, 0], dimred[:, 1], c=pred_labels)
